@@ -20,7 +20,6 @@ galaxy_info:
       - jammy
   - name: Debian
     versions:
-      - stretch
       - bullseye
       - bookworm
 

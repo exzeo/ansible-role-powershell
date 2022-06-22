@@ -35,7 +35,6 @@ jobs:
           - ubuntu:focal
           - ubuntu:hirsute
           - ubuntu:impish
-          - debian:stretch
           - debian:bullseye
           - debian:bookworm
 
