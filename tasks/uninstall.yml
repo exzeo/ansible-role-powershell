@@ -1,0 +1,10 @@
+---
+- name: Remove Powershell
+  ansible.builtin.apt:
+    pkg: powershell
+    state: absent
+  become: true
+  retries: 5
+  delay: 2
+  tags:
+    - uninstall

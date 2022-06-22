@@ -1,0 +1,14 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+  
+  - name: Check powershell version
+    command: "pwsh -Version"
+    ignore_errors: yes
+    register: powershell_current_version
+
+  - name: Ensure powershell is the correct version
+    assert:
+      that:
+        - "'7.2.1' in powershell_current_version.stdout"

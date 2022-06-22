@@ -1,0 +1,50 @@
+---
+- name: Install dependencies
+  ansible.builtin.apt:
+    name: "{{ dependencies_packages }}"
+    state: present
+    force: true
+    update_cache: yes
+  register: package_ok
+  retries: 5
+  delay: 2
+  until: package_ok is success
+  tags:
+    - install
+    - install-dependency
+
+- name: Check Current Powershell Version
+  ansible.builtin.command: "pwsh -Version"
+  register: "powershell_current_version"
+  changed_when: powershell_current_version.rc != 0
+  failed_when: false
+  tags:
+    - install
+    - check-current-version
+
+- name: Check Latest Version
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/powershell/powershell/releases/latest"
+    method: GET
+    return_content: true
+    status_code: 200
+    body_format: json
+  register: powershell_json_response
+  retries: 5
+  delay: 2
+  when: powershell_version|length == 0
+  tags: latest
+
+- name: Set Latest Version
+  when: powershell_version|length == 0 | default('')
+  ansible.builtin.set_fact:
+    powershell_version: "{{ powershell_json_response.json.tag_name | replace('v','') }}"
+  tags: latest
+
+- name: Install Powershell # noqa no-handler
+  ansible.builtin.apt:
+    deb: https://github.com/PowerShell/PowerShell/releases/download/v{{ powershell_version }}/powershell_{{ powershell_version }}-1.deb_amd64.deb
+    state: present
+  retries: 5
+  delay: 2
+  when: powershell_current_version.changed
