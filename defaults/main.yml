@@ -1,0 +1,7 @@
+---
+
+# Version of 'powershell' to install, defaults to latest version
+powershell_version: ""
+
+# Toggling this will uninstall from the server
+uninstall: false

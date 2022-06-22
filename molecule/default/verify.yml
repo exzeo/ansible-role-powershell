@@ -1,0 +1,15 @@
+---
+
+- name: Verify
+  hosts: all
+
+  tasks:
+    - name: Check powershell Version
+      command: "pwsh -Version"
+      register: powershell_current_version
+      changed_when: false
+
+    - name: Ensure powershell is installed
+      assert:
+        that:
+          - powershell_current_version.rc == 0
