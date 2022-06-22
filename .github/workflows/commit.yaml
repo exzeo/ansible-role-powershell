@@ -37,7 +37,6 @@ jobs:
           - ubuntu:hirsute
           - ubuntu:impish
           - debian:stretch
-          - debian:buster
           - debian:bullseye
           - debian:bookworm
 
